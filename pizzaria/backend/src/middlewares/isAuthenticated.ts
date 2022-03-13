@@ -18,6 +18,7 @@ export const isAuthenticated = (req: Request, res: Response, next: NextFunction)
     try{
         // Validar o token
         const { sub } = verify(token, process.env.JWT_SECRET) as PayLoad;
+        req.user_id = sub;
         return next();
     }catch (err){
         return res.status(401).end();
