@@ -10,8 +10,6 @@ class CreateCategoryController{
         const category = await createCategoryService.execute({ name });
         return res.json(category);
     }
-
-
 }
 
 export { CreateCategoryController };
