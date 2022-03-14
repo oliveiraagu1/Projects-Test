@@ -4,7 +4,6 @@ interface OrderRequest{
     table: number,
     name: string;
 }
-
 class CreateOrderService {
     async execute({table, name}: OrderRequest){
 
