@@ -38,7 +38,7 @@ CREATE TABLE "orders" (
 -- CreateTable
 CREATE TABLE "items" (
     "id" TEXT NOT NULL,
-    "ammount" INTEGER NOT NULL,
+    "amount" INTEGER NOT NULL,
     "created_at" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
     "update_at" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
     "order_id" TEXT NOT NULL,
