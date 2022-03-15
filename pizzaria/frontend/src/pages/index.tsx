@@ -1,12 +1,25 @@
+import { useContext, FormEvent } from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
 import styles from '../../styles/home.module.scss';
 import logoImg from '../../public/logo.svg';
+import Link from 'next/link';
 import { Input } from '../components/ui/Input';
 import { Button } from '../components/ui/Button';
-import Link from 'next/link';
+import { AuthContext } from '../contexts/AuthContext';
+
 
 export default function Home() {
+    const { signIn } = useContext(AuthContext);
+
+    async function handleLogin(event: FormEvent){
+        event.preventDefault();
+        let data = {
+            email: "as",
+            password: "12"
+        }
+        await signIn(data);
+    }
   return (
     <>
         <Head>
@@ -15,7 +28,7 @@ export default function Home() {
         <div className={styles.containerCenter}>
             <Image src={logoImg} alt="Logo pizzaria" />
             <div className={styles.login}>
-                <form>
+                <form onSubmit={handleLogin}>
                     <Input
                         placeholder="Digite o seu e-mail"
                         type="text"
