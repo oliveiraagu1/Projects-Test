@@ -7,6 +7,7 @@ import { ModalOrder } from '../../components/ModalOrder';
 import Head from 'next/head';
 import styles from './styles.module.scss';
 import Modal from 'react-modal';
+import {toast} from "react-toastify";
 
 
 type OrderProps = {
@@ -60,7 +61,27 @@ export default function Dashboard({ orders }: HomeProps){
         });
         setModalItem(response.data);
         setModalVisible(true);
-    };
+    }
+
+    async function handleFinishItem(id: string){
+        const apiClient = setupAPIClient();
+        await apiClient.put("order/finish", {
+            order_id: id
+        });
+
+        const response = await apiClient.get("orders");
+        setOrderList(response.data);
+        setModalVisible(false);
+        toast.success("Pedido finalizado com sucesso!");
+
+    }
+
+    async function handleRefreshOrders(){
+        const apiClient = setupAPIClient();
+        const response = await apiClient.get("orders");
+        setOrderList(response.data);
+        toast.success("Atualizado com sucesso!");
+    }
 
     Modal.setAppElement("#__next");
     return(
@@ -74,11 +95,14 @@ export default function Dashboard({ orders }: HomeProps){
 
                     <div className={styles.containerHeader}>
                         <h1>Últimos pedidos</h1>
-                        <button>
+                        <button onClick={handleRefreshOrders}>
                             <FiRefreshCcw size={25} color="#3FFFA3" />
                         </button>
                     </div>
                     <article className={styles.listOrders}>
+                        {orderList.length === 0 && (
+                            <span className={styles.emptyList}>Nenhum pedido aberto foi encontrado...</span>
+                        )}
                         {orderList.map( item => (
                             <section key={item.id} className={styles.orderItem}>
                                 <button onClick={() => handleOpenModalView(item.id)}>
@@ -94,6 +118,7 @@ export default function Dashboard({ orders }: HomeProps){
                         isOpen={modalVisible}
                         onRequestClose={handleCloseModal}
                         order={modalItem}
+                        handleFinishOrder={ handleFinishItem }
                     />
                 )}
             </div>
