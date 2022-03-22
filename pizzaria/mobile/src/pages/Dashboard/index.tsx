@@ -3,7 +3,7 @@ import { Text, SafeAreaView, TouchableOpacity, TextInput, StyleSheet } from 'rea
 import { useNavigation } from '@react-navigation/native';
 import { StackParamsList } from '../../routes/app.routes'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-
+import { api } from '../../services/api';
 
 export default function Dashboard(){
 
@@ -14,8 +14,15 @@ export default function Dashboard(){
         if(number === ''){
          return alert('Informe o número da mesa');
         }
-        // Precisa fazer a req para
-        navigation.navigate('Order', {number, order_id: '321'});
+
+        const response = await api.post('order', {
+            table: Number(number)
+        })
+
+        // Precisa fazer a req para mandar o número da ordem
+        navigation.navigate('Order', {number, order_id: response.data.id});
+
+        setNumber('');
     }
 
     return(
