@@ -119,6 +119,18 @@ export default function Order(){
         setItems(oldArray => [...oldArray, data]);
     }
 
+    async function handleDeleteItem(item_id: string){
+        await api.delete('order/remove', {
+            params: {
+                item_id
+            }
+        });
+        let removeItem = items.filter( item => {
+            return(item.id !== item_id);
+        });
+        setItems(removeItem);
+    }
+
     return(
         <View style={styles.container}>
             <View style={styles.header}>
@@ -175,7 +187,7 @@ export default function Order(){
 
             <FlatList
                 data={items}
-                renderItem={ ({ item }) => <ListItem data={item} />}
+                renderItem={ ({ item }) => <ListItem data={item} deleteItem={handleDeleteItem} />}
                 keyExtractor={ item => item.id }
                 showsVerticalScrollIndicator={false}
                 style={{flex: 1, marginTop: 24}}
