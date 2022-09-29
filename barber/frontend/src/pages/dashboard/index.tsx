@@ -1,16 +1,23 @@
-import Head from 'next/head';
-import { Flex, Text } from '@chakra-ui/react';
+import Head from "next/head";
+import { Flex, Text } from "@chakra-ui/react";
+import { canSSRAuth } from "../../utils/canSSRAuth";
 
-export default function Dashboard(){
-    return(
-        <>
-            <Head>
-                <title>BarberPro - Minha barbearia</title>
-            </Head>
+export default function Dashboard() {
+  return (
+    <>
+      <Head>
+        <title>BarberPro - Minha barbearia</title>
+      </Head>
 
-            <Flex>
-                <Text>Bem vindo ao dashboard</Text>
-            </Flex>
-        </>
-    )
+      <Flex>
+        <Text>Bem vindo ao dashboard</Text>
+      </Flex>
+    </>
+  );
 }
+
+export const getServerSideProps = canSSRAuth(async (context) => {
+  return {
+    props: {},
+  };
+});

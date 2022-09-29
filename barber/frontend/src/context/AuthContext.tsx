@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useState} from "react";
+import { createContext, ReactNode, useState } from "react";
 import { destroyCookie, setCookie } from "nookies";
 import Router from "next/router";
 
@@ -8,6 +8,8 @@ interface AuthContextData {
   user: UserProps;
   isAuthenticated: boolean;
   signIn: (credentials: SignInProps) => Promise<void>;
+  signUp: (credentials: SignInProps) => Promise<void>;
+  logoutUser: () => Promise<void>;
 }
 
 interface UserProps {
@@ -27,6 +29,12 @@ interface AuthProviderProps {
 }
 
 interface SignInProps {
+  email: string;
+  password: string;
+}
+
+interface SignupProps {
+  name: string;
   email: string;
   password: string;
 }
@@ -53,7 +61,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         password,
       });
 
-      const { id, name,  token, endereco, subscriptions } = response.data;
+      const { id, name, token, endereco, subscriptions } = response.data;
 
       setCookie(undefined, "@barber.token", token, {
         maxAge: 60 * 60 * 24, // 1 dia
@@ -65,7 +73,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         name,
         email,
         endereco,
-        subscriptions
+        subscriptions,
       });
 
       api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -76,8 +84,34 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   }
 
+  async function signUp({ name, email, password }: SignupProps) {
+    try {
+      await api.post("/users", {
+        name,
+        email,
+        password,
+      });
+
+      Router.push("/login");
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  async function logoutUser() {
+    try {
+      destroyCookie(null, "@barber.token", { path: "/" });
+      Router.push("/login");
+      setUser(null);
+    } catch (err) {
+      console.log("Error ao sair", err);
+    }
+  }
+
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated, signIn }}>
+    <AuthContext.Provider
+      value={{ user, isAuthenticated, signIn, signUp, logoutUser }}
+    >
       {children}
     </AuthContext.Provider>
   );
