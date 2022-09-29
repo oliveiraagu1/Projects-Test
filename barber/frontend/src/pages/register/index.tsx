@@ -3,8 +3,17 @@ import Image from "next/image";
 import Link from "next/link";
 import logoImg from "../../../public/images/logo.svg";
 import { Flex, Button, Center, Input, Text } from "@chakra-ui/react";
+import { useState } from "react";
 
 export default function Register() {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  function handleRegister(){
+    
+  }
+
   return (
     <>
       <Head>
@@ -34,6 +43,8 @@ export default function Register() {
             placeholder="Nome da barbearia"
             type="text"
             mb={3}
+            value={name}
+            onChange={ (e) => setName(e.target.value)}
           />
           <Input
             background="barber.400"
@@ -42,6 +53,8 @@ export default function Register() {
             placeholder="email@email.com"
             type="email"
             mb={3}
+            value={email}
+            onChange={ (e) => setEmail(e.target.value)}
           />
           <Input
             background="barber.400"
@@ -50,6 +63,8 @@ export default function Register() {
             placeholder="**********"
             type="text"
             mb={6}
+            value={password}
+            onChange={ (e) => setPassword(e.target.value)}
           />
 
           <Button
@@ -58,6 +73,7 @@ export default function Register() {
             color="gray.900"
             size="lg"
             _hover={{ bg: "#FFB13E" }}
+            onClick={handleRegister}
           >
             Cadastrar
           </Button>
