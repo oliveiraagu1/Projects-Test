@@ -1,4 +1,4 @@
-import { Request, response, Response } from 'express';
+import { Request, Response } from 'express';
 import { CreateUserService } from '../../services/user/CreateUserService';
 
 class CreateUserController{
@@ -8,7 +8,7 @@ class CreateUserController{
         const createUserService = new CreateUserService();
         const user = await createUserService.execute({ name, email, password });
 
-        return response.json(user);
+        return res.json(user);
     }
     
 }
