@@ -1,16 +1,21 @@
-import { useState, FormEvent } from "react";
+import { useState, useContext } from "react";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import logoImg from "../../../public/images/logo.svg";
 import { Flex, Button, Center, Input, Text } from "@chakra-ui/react";
+import { AuthContext } from "../../context/AuthContext";
 
 export default function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const { signIn } = useContext(AuthContext);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  function handleLogin(){
-    alert('teste')
+  async function handleLogin() {
+    await signIn({
+      email,
+      password,
+    });
   }
 
   return (
@@ -43,7 +48,7 @@ export default function Login() {
             type="email"
             mb={3}
             value={email}
-            onChange={ (e) => setEmail(e.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
           />
           <Input
             background="barber.400"
@@ -53,7 +58,7 @@ export default function Login() {
             type="text"
             mb={6}
             value={password}
-            onChange={ (e) => setPassword(e.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
           />
 
           <Button
@@ -69,7 +74,7 @@ export default function Login() {
 
           <Center mt={2}>
             <Link href="/register">
-              <Text cursor="pointer" color='#FFF'>
+              <Text cursor="pointer" color="#FFF">
                 Ainda não possui conta?
                 <strong> Cadastre-se</strong>
               </Text>
