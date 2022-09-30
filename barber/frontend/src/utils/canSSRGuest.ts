@@ -12,7 +12,7 @@ export function canSSRGuest<P>(fn:GetServerSideProps<P>){
         if(cookies['@barber.token']){
             return {
                 redirect: {
-                    destination: '/home',
+                    destination: '/dashboard',
                     permanent: false,
                 }
             }

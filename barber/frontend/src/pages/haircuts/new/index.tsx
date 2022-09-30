@@ -1,5 +1,7 @@
+import { useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
+import Router from 'next/router'
 import { Sidebar } from "../../../components/sidebar";
 import {
   Flex,
@@ -20,6 +22,25 @@ interface NewHaircutProps {
 
 export default function NewHaircuts({ subscription, count }: NewHaircutProps) {
   const [isMobile] = useMediaQuery("(max-width: 500px)");
+
+  const [name, setName] = useState("");
+  const [price, setPrice] = useState("");
+
+  async function handleRegister() {
+    if (!name || !price) return;
+
+    try {
+      const apiClient = setupApiClient();
+      await apiClient.post("/haircut", {
+        name,
+        price:Number(price)
+      });
+      alert('Modelo cadastrado');
+      Router.push('/haircuts')
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   return (
     <>
@@ -84,6 +105,8 @@ export default function NewHaircuts({ subscription, count }: NewHaircutProps) {
               bg="gray.900"
               mb={3}
               disabled={!subscription && count >= 3}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
             />
             <Input
               placeholder="Valor do corte"
@@ -93,6 +116,8 @@ export default function NewHaircuts({ subscription, count }: NewHaircutProps) {
               bg="gray.900"
               mb={4}
               disabled={!subscription && count >= 3}
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
             />
 
             <Button
@@ -103,22 +128,25 @@ export default function NewHaircuts({ subscription, count }: NewHaircutProps) {
               bg="button.cta"
               _hover={{ bg: "#FFB13E" }}
               disabled={!subscription && count >= 3}
+              onClick={handleRegister}
             >
               Cadastrar
             </Button>
 
-            {!subscription && count >=3 &&(
-                <Flex direction='row' align='center' justify='center'>
-                    <Text>
-                        Você atingiu seu limite de corte.
-                    </Text>
-                    <Link href='/planos'>
-                        <Text fontWeight='bold' color='#31FB6A' cursor='pointer' ml={1}>
-                            Seja premium
-                        </Text>
-                    </Link>
-                </Flex>
-
+            {!subscription && count >= 3 && (
+              <Flex direction="row" align="center" justify="center">
+                <Text>Você atingiu seu limite de corte.</Text>
+                <Link href="/planos">
+                  <Text
+                    fontWeight="bold"
+                    color="#31FB6A"
+                    cursor="pointer"
+                    ml={1}
+                  >
+                    Seja premium
+                  </Text>
+                </Link>
+              </Flex>
             )}
           </Flex>
         </Flex>
@@ -136,9 +164,7 @@ export const getServerSideProps = canSSRAuth(async (context) => {
     return {
       props: {
         subscritpion:
-          response.data?.subscriptions?.status === "active"
-            ? true
-            : false,
+          response.data?.subscriptions?.status === "active" ? true : false,
         count: count.data,
       },
     };
