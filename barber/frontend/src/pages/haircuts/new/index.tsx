@@ -10,7 +10,15 @@ import {
   Input,
 } from "@chakra-ui/react";
 import { FiChevronLeft } from "react-icons/fi";
-export default function NewHaircuts() {
+import { canSSRAuth } from "../../../utils/canSSRAuth";
+import { setupApiClient } from "../../../services/api";
+
+interface NewHaircutProps {
+  subscription: boolean;
+  count: number;
+}
+
+export default function NewHaircuts({ subscription, count }: NewHaircutProps) {
   const [isMobile] = useMediaQuery("(max-width: 500px)");
 
   return (
@@ -63,43 +71,85 @@ export default function NewHaircuts() {
             justify="center"
             pt={8}
             pb={8}
-            direction='column'
+            direction="column"
           >
             <Heading mb={4} fontSize={isMobile ? "22px" : "3xl"} color="white">
               Cadastrar modelos
             </Heading>
             <Input
-                placeholder="Nome do corte"
-                size='lg'
-                type='text'
-                w='85%'
-                bg='gray.900'
-                mb={3}
-                
+              placeholder="Nome do corte"
+              size="lg"
+              type="text"
+              w="85%"
+              bg="gray.900"
+              mb={3}
+              disabled={!subscription && count >= 3}
             />
             <Input
-                placeholder="Valor do corte"
-                size='lg'
-                type='text'
-                w='85%'
-                bg='gray.900'
-                mb={4}
-                
+              placeholder="Valor do corte"
+              size="lg"
+              type="text"
+              w="85%"
+              bg="gray.900"
+              mb={4}
+              disabled={!subscription && count >= 3}
             />
 
             <Button
-                width='85%'
-                size='lg'
-                color='gray.900'
-                mb={6}
-                bg='button.cta'
-                _hover={{ bg: '#FFB13E'}}
+              width="85%"
+              size="lg"
+              color="gray.900"
+              mb={6}
+              bg="button.cta"
+              _hover={{ bg: "#FFB13E" }}
+              disabled={!subscription && count >= 3}
             >
-                Cadastrar
+              Cadastrar
             </Button>
+
+            {!subscription && count >=3 &&(
+                <Flex direction='row' align='center' justify='center'>
+                    <Text>
+                        Você atingiu seu limite de corte.
+                    </Text>
+                    <Link href='/planos'>
+                        <Text fontWeight='bold' color='#31FB6A' cursor='pointer' ml={1}>
+                            Seja premium
+                        </Text>
+                    </Link>
+                </Flex>
+
+            )}
           </Flex>
         </Flex>
       </Sidebar>
     </>
   );
 }
+
+export const getServerSideProps = canSSRAuth(async (context) => {
+  try {
+    const apiClient = setupApiClient(context);
+    const response = await apiClient.get("/check");
+    const count = await apiClient.get("/haircut/count");
+
+    return {
+      props: {
+        subscritpion:
+          response.data?.subscriptions?.status === "active"
+            ? true
+            : false,
+        count: count.data,
+      },
+    };
+  } catch (err) {
+    console.log(err);
+
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+});
