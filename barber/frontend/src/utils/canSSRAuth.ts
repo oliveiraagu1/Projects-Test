@@ -12,7 +12,7 @@ import {
     ): Promise<GetServerSidePropsResult<P>> => {
       const cookies = parseCookies(context);
   
-      const token = cookies["@volo.token"];
+      const token = cookies["@barber.token"];
   
       if (!token) {
         return {
@@ -27,7 +27,7 @@ import {
         return await fn(context);
       } catch (err) {
         if (err instanceof AuthTokenError) {
-          destroyCookie(context, "@volo.token", { path: "/" });
+          destroyCookie(context, "@barber.token", { path: "/" });
           return {
             redirect: {
               destination: "/",
