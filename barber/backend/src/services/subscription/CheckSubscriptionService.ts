@@ -7,7 +7,7 @@ interface CheckSubscriptionRequest {
 class CheckSubscriptionService {
   async execute({ user_id }: CheckSubscriptionRequest) {
 
-    const status = await prismaClient.user.findMany({
+    const status = await prismaClient.user.findFirst({
         where: {
             id:user_id,
         },
