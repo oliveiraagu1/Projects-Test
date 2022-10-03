@@ -12,7 +12,7 @@ export default class MyDocument extends Document {
             rel="stylesheet"
           />
         </Head>
-        <body style={{color: 'white'}}>
+        <body>
           <Main />
           <NextScript />
         </body>

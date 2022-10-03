@@ -79,7 +79,9 @@ export default function Dashboard({ schedule }: DashboardProps) {
               Agenda
             </Heading>
             <Link href="/new">
-              <Button>Registrar</Button>
+              <Button bg="gray.700" _hover={{ bg: "gray.400" }}>
+                Registrar
+              </Button>
             </Link>
           </Flex>
           {list.map((item) => (

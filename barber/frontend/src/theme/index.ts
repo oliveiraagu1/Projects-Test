@@ -14,3 +14,14 @@ export const colors = {
         900: "#FBA931"
     }
 }
+
+export const styles = {
+    global: {
+        body: {
+            color: 'gray.100'
+        },
+        a: {
+            color: '#FFF'
+        }
+    }
+}

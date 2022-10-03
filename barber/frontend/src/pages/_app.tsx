@@ -1,9 +1,9 @@
 import type { AppProps } from "next/app";
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
-import { colors } from "../theme";
+import { colors, styles } from "../theme";
 import { AuthProvider } from "../context/AuthContext";
 
-const theme = extendTheme({ colors });
+const theme = extendTheme({ styles, colors });
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
