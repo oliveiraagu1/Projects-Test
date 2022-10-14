@@ -56,7 +56,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   useEffect(() => {
     async function handleUser() {
-      const { "@volo.token": token } = parseCookies();
+      const { "@barber.token": token } = parseCookies();
 
       try {
         if (token) {
