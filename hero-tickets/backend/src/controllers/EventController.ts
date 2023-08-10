@@ -9,7 +9,21 @@ class EventController {
     }
 
     async create(request: Request, response: Response, next: NextFunction) {
-        const eventData: Event = request.body;
+        let eventData: Event = request.body;
+        const files = request.files as any;
+
+        if (files) {
+            const banner = files.banner[0];
+            const flyers = files.flyers
+
+            eventData = {
+                ...eventData,
+                banner: banner.filename,
+                flyers: flyers.map((item: any) => item.filename),
+            }
+        }
+
+
         try {
             await this.eventUseCase.create(eventData)
             return response.status(201).json({ message: 'Evento criado com sucesso!' })
