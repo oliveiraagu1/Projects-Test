@@ -9,6 +9,7 @@ describe('Event test', () => {
         const event = {
             title: 'Jorge e Mateus',
             price: [{ sector: 'Pista', amount: '20' }],
+            categories: ['Show'],
             description: 'Evento descrição',
             city: 'Belo Horizonte',
             location: {
