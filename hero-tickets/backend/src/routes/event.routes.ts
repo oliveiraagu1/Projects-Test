@@ -27,7 +27,9 @@ class EventRoutes {
                 name: 'flyers',
                 maxCount: 3
             }
-        ]), this.eventConttoller.create.bind(this.eventConttoller))
+        ]), this.eventConttoller.create.bind(this.eventConttoller));
+
+        this.router.get('/', this.eventConttoller.findEventByLocation.bind(this.eventConttoller))
     }
 }
 
