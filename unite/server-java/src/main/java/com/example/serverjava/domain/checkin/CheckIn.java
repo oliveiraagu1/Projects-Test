@@ -19,7 +19,7 @@ public class CheckIn {
     @Id
     @Column(nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private Integer id;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
