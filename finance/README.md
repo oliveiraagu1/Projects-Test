@@ -14,6 +14,8 @@ NEXT_PUBLIC_CLERK_SIGN_IN_URL=
 
 NEXT_PUBLIC_CLERK_SIGN_UP_URL=
 
+DATABASE_URL=
+
 ```bash
 npm run dev
 # or
