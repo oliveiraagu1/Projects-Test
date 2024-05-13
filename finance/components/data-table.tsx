@@ -15,6 +15,7 @@ import {
     useReactTable,
 } from "@tanstack/react-table";
 
+import { useConfirm } from '@/hooks/use-confirm';
 import { Button } from "@/components/ui/button";
 import { Input } from '@/components/ui/input';
 
@@ -43,6 +44,10 @@ export function DataTable<TData, TValue>({
     onDelete,
     disabled,
 }: DataTableProps<TData, TValue>) {
+    const [ConfirmationDialog, confirm] = useConfirm(
+        "Are you sure?",
+        "You are about to perfom a bulk delete."
+    );
 
     const [sorting, setSorting] = React.useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -69,6 +74,7 @@ export function DataTable<TData, TValue>({
 
     return (
         <div>
+            <ConfirmationDialog />
             <div className="flex items-center py-4">
                 <Input
                     placeholder={`Filter ${filterKey}...`}
@@ -84,6 +90,14 @@ export function DataTable<TData, TValue>({
                         size='sm'
                         variant='outline'
                         className='ml-auto font-normal text-xs'
+                        onClick={async () => {
+                            const ok = await confirm();
+                            
+                            if (ok) {
+                                onDelete(table.getFilteredRowModel().rows)
+                                table.resetRowSelection();
+                            }
+                        }}
                     >
                         <Trash className='size-4 mr-2' />
                         Delete ({table.getFilteredSelectedRowModel().rows.length})
