@@ -8,6 +8,13 @@
       "when": 1715457746452,
       "tag": "0000_purple_jigsaw",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1715640778141,
+      "tag": "0001_fearless_taskmaster",
+      "breakpoints": true
     }
   ]
 }
