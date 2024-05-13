@@ -88,8 +88,9 @@ export const AccountForm = ({
                     >
                         <Trash className='size-4 mr-2' />
                         Delete account
-                    </Button>)}
-                /</form>
+                    </Button>
+                )}
+            </form>
         </Form>
     )
 }
