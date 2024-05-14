@@ -50,7 +50,7 @@ export default function CategoriesPage() {
             <Card className="border-none drop-shadow-sm">
                 <CardHeader className="gap-y-2 lg:flex-row lg:items-center lg:justify-between">
                     <CardTitle className="text-xl line-clamp-1">
-                        Accounts page
+                        Categories page
                     </CardTitle>
                     <Button size='sm' onClick={onOpen}>
                         <Plus className="size-4 mr-2" />
@@ -73,5 +73,3 @@ export default function CategoriesPage() {
         </div>
     )
 }
-
-// 05:11:07
