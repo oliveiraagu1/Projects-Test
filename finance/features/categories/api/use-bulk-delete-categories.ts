@@ -30,5 +30,3 @@ export const useBulkDeleteCategories = () => {
 
     return mutation;
 }
-
-// 05:13:13
