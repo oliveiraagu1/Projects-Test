@@ -31,7 +31,7 @@ const app = new Hono()
 
             const startDate = from ? parse(from, "yyyy-MM-dd", new Date()) : defaultFrom;
             const endDate = to ? parse(to, 'yyyy-MM-dd', new Date()) : defaultTo;
-            //07:27:47
+            
             const data = await db
                 .select({
                     id: transactions.id,
@@ -47,14 +47,14 @@ const app = new Hono()
                 .from(transactions)
                 .innerJoin(accounts, eq(transactions.accountId, accounts.id))
                 .leftJoin(categories, eq(transactions.categoryId, categories.id))
-                // .where(
-                //     and(
-                //         accountId ? eq(transactions.accountId, accountId) : undefined,
-                //         eq(accounts.userId, auth.userId),
-                //         gte(transactions.date, startDate),
-                //         lte(transactions.date, endDate),
-                //     )
-                // )
+                .where(
+                    and(
+                        accountId ? eq(transactions.accountId, accountId) : undefined,
+                        eq(accounts.userId, auth.userId),
+                        gte(transactions.date, startDate),
+                        lte(transactions.date, endDate),
+                    )
+                )
                 .orderBy(desc(transactions.date));
 
                 console.log(data);
